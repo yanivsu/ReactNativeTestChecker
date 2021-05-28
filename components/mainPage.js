@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Nunito_400Regular",
     fontSize: 30,
+    margin: 20,
   },
   textInput: {
     height: 40,
@@ -77,14 +78,14 @@ const MainPage = () => {
         testName: testName.toUpperCase(),
         testResult: testResult,
       };
-      dispatchMainMap(getDataFromServer(testName));
+      // For now we cant use get DATA FROM SERVER
+      //dispatchMainMap(getDataFromServer(testName));
       dispatchMainMap(createActionSendResult(payload));
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {mainPageSelector.status.toString()}</Text>
       <TextInput
         style={styles.textInput}
         placeholder="Enter your test name"
@@ -98,6 +99,9 @@ const MainPage = () => {
         keyboardType={"numeric"}
         defaultValue={testResult}
       />
+      <Text style={styles.text}>
+        Result: {mainPageSelector.status.toString()}
+      </Text>
       <ThemeProvider theme={theme}>
         <Button
           title="Submit blood test results"
