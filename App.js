@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Header } from "react-native-elements";
-import MainPage from "../AwesomeProject/components/mainPage";
+import MainPage from "./components/mainPage";
 import { Provider } from "react-redux";
 import configureStore from "./store/configStore";
 

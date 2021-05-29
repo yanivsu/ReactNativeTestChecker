@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   isLoading: true,
 };
 
-const mainPage = (state = INITIAL_STATE, action) => {
+const mainPageReducer = (state = INITIAL_STATE, action) => {
   let newState = { ...state };
   switch (action.type) {
     case RESULT_UNKNOWN:
@@ -76,4 +76,4 @@ function mistakeFixer(testName, data) {
   }
 }
 
-export default mainPage;
+export default mainPageReducer;

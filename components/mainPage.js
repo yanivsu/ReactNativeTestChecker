@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useSelector, useDispatch } from "react-redux";
 import { createActionSendResult, loadData } from "../actions/mainPageAction";
-import mainPage from "../reducers/mainPageReducer";
+import mainPageReducer from "../reducers/mainPageReducer";
 import { StyleSheet, TextInput, View, Text } from "react-native";
 import { Button } from "react-native-elements";
 import * as _ from "lodash";
@@ -39,11 +39,11 @@ const MainPage = () => {
   let [testName, setTestName] = useState("");
   let [testResult, setTestResult] = useState("");
 
-  const dispatchMainMap = useDispatch(mainPage);
+  const dispatchMainPage = useDispatch(mainPageReducer);
   let mainPageSelector = useSelector((state) => state.mainPageReducer);
 
   useEffect(() => {
-    dispatchMainMap(loadData());
+    dispatchMainPage(loadData());
   }, []);
 
   const handleSubmit = () => {
@@ -52,7 +52,7 @@ const MainPage = () => {
         testName: testName.toUpperCase(),
         testResult: testResult,
       };
-      dispatchMainMap(createActionSendResult(payload));
+      dispatchMainPage(createActionSendResult(payload));
     } else {
       setTestResult("Enter valid numbers");
     }
