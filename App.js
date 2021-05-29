@@ -14,7 +14,7 @@ export default function App() {
         <Header
           centerComponent={{
             text: "HeartMe",
-            style: { color: "#fff", fontFamily: "Nunito_400Regular" },
+            style: { color: "#fff" },
           }}
         ></Header>
         <MainPage />

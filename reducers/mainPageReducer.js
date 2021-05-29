@@ -3,33 +3,14 @@ import {
   RESULT_GOOD,
   RESULT_SEND,
   RESULT_UNKNOWN,
-  RESULT_GET_DATA_FROM_SERVER,
+  RESULT_FETCH_DATA,
 } from "../actions/mainPageAction";
-import axios from "axios";
 import _ from "lodash";
 
 const INITIAL_STATE = {
   status: "",
-  data: [
-    {
-      bloodTestConfig: [
-        {
-          name: "HDL Cholesterol",
-          threshold: 40,
-        },
-        {
-          name: "LDL Cholesterol",
-          threshold: 100,
-        },
-        {
-          name: "A1C",
-          threshold: 4,
-        },
-      ],
-    },
-  ],
-  isLoading: false,
-  counter: 1,
+  data: [],
+  isLoading: true,
 };
 
 const mainPage = (state = INITIAL_STATE, action) => {
@@ -43,30 +24,18 @@ const mainPage = (state = INITIAL_STATE, action) => {
         newState.status = RESULT_UNKNOWN;
         return newState;
       } else if (
-        newState.data[0].bloodTestConfig[testNameIndex].threshold >=
+        newState.data[testNameIndex].threshold >=
         _.toInteger(action.payload.testResult)
       ) {
-        newState.status =
-          newState.data[0].bloodTestConfig[testNameIndex].name +
-          " " +
-          RESULT_GOOD;
+        newState.status = newState.data[testNameIndex].name + " " + RESULT_GOOD;
         return newState;
       } else {
-        newState.status =
-          newState.data[0].bloodTestConfig[testNameIndex].name +
-          " " +
-          RESULT_BAD;
+        newState.status = newState.data[testNameIndex].name + " " + RESULT_BAD;
         return newState;
       }
-
-    case RESULT_BAD:
-      newState.status = action.type;
-      return newState;
-    case RESULT_GOOD:
-      newState.status = action.type;
-      return newState;
-    case RESULT_GET_DATA_FROM_SERVER:
-      newState.serverData = action.data;
+    case RESULT_FETCH_DATA:
+      newState.data = action.payload;
+      newState.isLoading = false;
       return newState;
     default:
       newState.counter += 1;
@@ -76,20 +45,24 @@ const mainPage = (state = INITIAL_STATE, action) => {
 
 function mistakeFixer(testName, data) {
   testName = testName.replace(/[^a-zA-Z0-9]/g, " ");
+  let testNameReusltCounter = 0;
   let testWordArray = testName.split(" ");
   if (!Array.isArray(testWordArray)) {
     testWordArray = [testWordArray];
   } else {
     let testNameToReturn = "";
     testWordArray.forEach((word, index) => {
-      data[0].bloodTestConfig.forEach((testName) => {
+      data.forEach((testName) => {
         if (testName.name.includes(word) && word !== "") {
+          testNameReusltCounter++;
           return (testNameToReturn = testName.name);
         }
       });
     });
-    if (testNameToReturn !== "") {
-      let index = _.findIndex(data[0].bloodTestConfig, function (o) {
+    if (testNameReusltCounter > 1) {
+      return -1;
+    } else if (testNameToReturn !== "") {
+      let index = _.findIndex(data, function (o) {
         return o.name === testNameToReturn;
       });
       if (index !== -1) {
