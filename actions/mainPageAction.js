@@ -21,4 +21,3 @@ export const loadData = () => {
     dispatch(createActionFetchData(newDataSet));
   };
 };
-ss;
