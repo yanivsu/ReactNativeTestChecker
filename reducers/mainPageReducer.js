@@ -38,7 +38,6 @@ const mainPageReducer = (state = INITIAL_STATE, action) => {
       newState.isLoading = false;
       return newState;
     default:
-      newState.counter += 1;
       return newState;
   }
 };
@@ -51,7 +50,7 @@ function mistakeFixer(testName, data) {
     testWordArray = [testWordArray];
   } else {
     let testNameToReturn = "";
-    testWordArray.forEach((word, index) => {
+    testWordArray.forEach((word) => {
       data.forEach((testName) => {
         if (testName.name.includes(word) && word !== "") {
           testNameReusltCounter++;
