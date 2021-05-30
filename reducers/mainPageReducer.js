@@ -46,41 +46,39 @@ function mistakeFixer(testName, data) {
   testName = testName.replace(/[^a-zA-Z0-9]/g, " ");
 
   let testWordArray = testName.split(" ");
-  let indexOfBestResult = -1;
-  var sumOfMaxTestNames = 0;
-  let unknowTest = 0;
+  let arrayOfIndexs = new Array(data.length).fill(0);
   let testNameResultCounter = 0;
 
   if (!Array.isArray(testWordArray)) {
     testWordArray = [testWordArray];
   } else {
-    let testNameToReturn = "";
     testWordArray.forEach((word) => {
       data.forEach((testToCheck, index) => {
         if (word !== "" && testToCheck.name.toUpperCase().includes(word)) {
           testNameResultCounter++;
-          indexOfBestResult = index;
+          arrayOfIndexs[index]++;
         }
       });
     });
+    let indexOfBestResult = arrayOfIndexs.indexOf(Math.max(...arrayOfIndexs));
 
-    // if (testNameToReturn !== "") {
-    //   let index = _.findIndex(data, function (o) {
-    //     return o.name === testNameToReturn;
-    //   });
-    //   return data[indexOfBestResult].name;
-    //   if (index !== -1) {
-    //     return index;
-    //   } else {
-    //     return index;
-    //   }
-    // } else {
-    //   return -1;
-    // }
-    if (testNameResultCounter % 2 !== 0 && testNameResultCounter !== 0)
+    if (
+      indexOfBestResult !== undefined &&
+      verifyFunction(arrayOfIndexs[indexOfBestResult], arrayOfIndexs)
+    )
       return indexOfBestResult;
     else return -1;
   }
+}
+function verifyFunction(numberToSearch, arrayOfIndexs) {
+  let sumOfIndexes = 0;
+  for (let i = 0; i < arrayOfIndexs.length; i++) {
+    if (arrayOfIndexs[i] === numberToSearch) {
+      sumOfIndexes++;
+    }
+  }
+  if (sumOfIndexes === 1) return 1;
+  else return 0;
 }
 
 export default mainPageReducer;
