@@ -41,21 +41,25 @@ const mainPageReducer = (state = INITIAL_STATE, action) => {
       return newState;
   }
 };
-
+/**
+ *
+ * @param {The name of the user test} testName
+ * @param {all data set } data
+ * this function help me know what is the user testname
+ */
 function mistakeFixer(testName, data) {
-  testName = testName.replace(/[^a-zA-Z0-9]/g, " ");
+  testName = testName.replace(/[^a-zA-Z0-9]/g, " "); // we stay only wi A-Z a-z 0-9
 
   let testWordArray = testName.split(" ");
   let arrayOfIndexs = new Array(data.length).fill(0);
-  let testNameResultCounter = 0;
 
   if (!Array.isArray(testWordArray)) {
     testWordArray = [testWordArray];
   } else {
+    /* Check which word from the test list is the most similar word entered by the user  */
     testWordArray.forEach((word) => {
       data.forEach((testToCheck, index) => {
         if (word !== "" && testToCheck.name.toUpperCase().includes(word)) {
-          testNameResultCounter++;
           arrayOfIndexs[index]++;
         }
       });
@@ -70,6 +74,8 @@ function mistakeFixer(testName, data) {
     else return -1;
   }
 }
+// VerifyFunction helps me to know if there more indexes with the max value
+// if it is we dont know for sure what is the test name the user mean.
 function verifyFunction(numberToSearch, arrayOfIndexs) {
   let sumOfIndexes = 0;
   for (let i = 0; i < arrayOfIndexs.length; i++) {
